@@ -12,82 +12,95 @@ $(document).ready(function() {
           {
             category: 'Video Games',
             item: 'Far Cry New Dawn - Standard Edition - PS4', 
-            cost: '$6.99'
+            cost: '$6.99',
+            filter: 1
           },
           {
             category: 'Video Games',
             item: 'Marvels Spider Man - PS4', 
-            cost: '$8.99'
+            cost: '$8.99',
+            filter: 1
           },
           {
             category: 'Video Games',
             item: 'Red Dead Redemption 2 - PS4', 
-            cost: '$9.99'
+            cost: '$9.99',
+            filter: 1
           },
           {
             category: 'Board Games',
             item: 'Yahtzee', 
-            cost: '$7.99'
+            cost: '$7.99',
+            filter: 1
           },         
           {
             category: 'Board Games',
             item: 'Jenga Classic Game', 
-            cost: '$6.99'
+            cost: '$6.99',
+            filter: 1
           },
           {
             category: 'Board Games',
             item: 'Sorry! Game', 
-            cost: '$8.99'
+            cost: '$8.99',
+            filter: 1
           }
   ];
 
 
-
+  //Display any row from shoppingSite where filter is set to 1
   const displayCatalogItems = function()
   {
-    console.log('displaying');
+    // console.log('displaying');
     for (let i=0; i< shoppingSite.length; i++)
     {
-      $('.prodtabbody').append("<tr>");
-      $('.prodtabbody').append(`<td>${shoppingSite[i].category}</td>`);
-      $('.prodtabbody').append(`<td>${shoppingSite[i].item}</td>`);
-      $('.prodtabbody').append(`<td>${shoppingSite[i].cost}</td>`);
-      $('.prodtabbody').append(`<th><button id="add${i}">Add to Cart</button></th>`);
-      $('.prodtabbody').append("</tr>");
-    }
-  }
-
-  const displayOnScreen = function(tabbody)
-  {
-    if (tabbody === 'prodtabbody')
-    {
-      console.log('prodtabbody')
-      $('.prodtabbody').empty();
-      for (let i=0; i< shoppingSite.length; i++)
+      if (shoppingSite[i].filter)
       {
         $('.prodtabbody').append("<tr>");
         $('.prodtabbody').append(`<td>${shoppingSite[i].category}</td>`);
         $('.prodtabbody').append(`<td>${shoppingSite[i].item}</td>`);
         $('.prodtabbody').append(`<td>${shoppingSite[i].cost}</td>`);
-        // $('.prodtabbody').append(`<th><button id="add${i}">Add</button></th>`);
-        let newButton = $('<button>');
-        // Adds a class of stock to our button
-        newButton.addClass('add');
-        // Added a data-attribute
-        newButton.attr('cat-name', shoppingSite[i].category);
-        newButton.attr('item-name', shoppingSite[i].item);
-        newButton.attr('cost', shoppingSite[i].cost);
-        // Provided the initial button text
-        newButton.text('Add');
-        // Added the button to the prodtabbody
-        $('.prodtabbody').append(newButton);
+        $('.prodtabbody').append(`<th><button id="add${i}">Add to Cart</button></th>`);
         $('.prodtabbody').append("</tr>");
+      }
+    }
+  }
+
+  //Display any row from ShoppingSite where filter is set to 1
+  const displayOnScreen = function(tabbody)
+  {
+    if (tabbody === 'prodtabbody')
+    {
+      // console.log('prodtabbody')
+      $('.prodtabbody').empty();
+      for (let i=0; i< shoppingSite.length; i++)
+      {
+        if (shoppingSite[i].filter)
+        {
+          $('.prodtabbody').append("<tr>");
+          $('.prodtabbody').append(`<td>${shoppingSite[i].category}</td>`);
+          $('.prodtabbody').append(`<td>${shoppingSite[i].item}</td>`);
+          $('.prodtabbody').append(`<td>${shoppingSite[i].cost}</td>`);
+          // $('.prodtabbody').append(`<th><button id="add${i}">Add</button></th>`);
+          let newButton = $('<button>');
+          // Adds a class of stock to our button
+          newButton.addClass('add');
+          // Added a data-attribute
+          newButton.attr('cat-name', shoppingSite[i].category);
+          newButton.attr('item-name', shoppingSite[i].item);
+          newButton.attr('cost', shoppingSite[i].cost);
+          // Provided the initial button text
+          newButton.text('Add');
+          // Added the button to the prodtabbody
+          $('.prodtabbody').append(newButton);
+          $('.prodtabbody').append("</tr>");
+        }
       } 
     }
     else
     if (tabbody === 'carttabbody')
     {
-      console.log('carttabbody');
+      // console.log('carttabbody');
       $('.carttabbody').empty();
       for (let i=0; i< shoppingCart.length; i++)
       {
@@ -152,11 +165,48 @@ $(document).ready(function() {
     displayOnScreen('carttabbody');
   }
 
+  const clearfilter = function()
+  {
+    for (let i=0; i<shoppingSite.length; i++)
+      shoppingSite[i].filter = 1;
+    displayOnScreen('prodtabbody');
+  }
+
+  const filterList = function()
+  {
+    const filterVal = $('#filterinput').val();
+    console.log(filterVal);
+    let found = false;
+    if (filterVal)
+    {
+      for (let i=0; i<shoppingSite.length; i++)
+      {
+        if (filterVal === shoppingSite[i].category)
+        {
+          found = true;
+          console.log("filter found");
+          shoppingSite[i].filter = 1;
+        }
+        else
+          shoppingSite[i].filter = 0;
+      }
+      if (!found)
+      {
+        alert("Invalid Category. Please try again");
+      }
+    }
+    else alert("Please enter a category filter");
+
+    $('#filterinput').val('');
+    displayOnScreen('prodtabbody');
+  }
 
   // displayCatalogItems();
   displayOnScreen('prodtabbody');
   $('.productPane').on('click', '.add', addToCart);
   $('.shoppingCartPane').on('click', '.remove', removeFromCart);
+  $('#filterCat').on('click', filterList);
+  $('#clearfilter').on('click', clearfilter);
   //check for add button click
   // for (let i=0; i<shoppingSite.length; i++)
   // {
