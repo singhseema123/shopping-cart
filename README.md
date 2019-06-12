@@ -1,2 +1,2 @@
-# shopping-cart
-Simple JQuery Bootstrap Shopping Cart
+# shoppingCart_test
+Test suite for ShoppingCart homework

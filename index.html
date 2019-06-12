@@ -15,6 +15,7 @@
 </head>
 
 <body>
+<div id="mocha">
   <div class="container">
     <h1>Best Game in Town</h1>
       <div class="row">
@@ -45,7 +46,22 @@
       </div>
       
   </div>
+ </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/5.2.0/mocha.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.1.2/chai.min.js"></script>
+  <script src="https://sinonjs.org/releases/sinon-6.1.4.js"></script>
+  <script>
+    mocha.ui('bdd');
+    mocha.reporter('html');
+    const expect = chai.expect;
+  </script>
   <script src="./assets/javascript/shoppingSite.js"></script>
+  <!-- <script src="test.js"></script> -->
+  <script>
+    mocha.run();
+  </script>
+
 </body>
 
 </html>
